@@ -19,11 +19,8 @@
 
 #region Using Statements
 using System;
-using System.Collections.Generic;
 
-using Jitter.Dynamics;
 using Jitter.LinearMath;
-using Jitter.Collision.Shapes;
 #endregion
 
 namespace Jitter.Collision.Shapes
@@ -51,7 +48,7 @@ namespace Jitter.Collision.Shapes
         /// </summary>
         /// <param name="length">The length of the capsule (exclusive the round endcaps).</param>
         /// <param name="radius">The radius of the endcaps.</param>
-        public CapsuleShape(float length,float radius)
+        public CapsuleShape(float length, float radius)
         {
             this.length = length;
             this.radius = radius;
@@ -63,7 +60,7 @@ namespace Jitter.Collision.Shapes
         /// </summary>
         public override void CalculateMassInertia()
         {
-            float massSphere = (3.0f / 4.0f) * JMath.Pi * radius * radius * radius;
+            float massSphere = (4.0f / 3.0f) * JMath.Pi * radius * radius * radius;
             float massCylinder = JMath.Pi * radius * radius * length;
 
             mass = massCylinder + massSphere;
@@ -87,13 +84,13 @@ namespace Jitter.Collision.Shapes
         /// <param name="result">The result.</param>
         public override void SupportMapping(ref JVector direction, out JVector result)
         {
-            float r = (float)Math.Sqrt(direction.X * direction.X + direction.Z * direction.Z);
+            float r = (float) Math.Sqrt(direction.X * direction.X + direction.Z * direction.Z);
 
             if (Math.Abs(direction.Y) > 0.0f)
             {
                 JVector dir; JVector.Normalize(ref direction, out dir);
                 JVector.Multiply(ref dir, radius, out result);
-                result.Y += Math.Sign(direction.Y) * 0.5f * length;              
+                result.Y += Math.Sign(direction.Y) * 0.5f * length;
             }
             else if (r > 0.0f)
             {
