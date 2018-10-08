@@ -22,12 +22,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-using Jitter.Dynamics;
-using Jitter.LinearMath;
-using Jitter.Collision.Shapes;
 using Jitter.Collision;
-using Jitter.Dynamics.Constraints;
+using Jitter.Collision.Shapes;
 using Jitter.DataStructures;
+using Jitter.Dynamics.Constraints;
+using Jitter.LinearMath;
 #endregion
 
 namespace Jitter.Dynamics
@@ -99,7 +98,8 @@ namespace Jitter.Dynamics
         /// <summary>
         /// If true, the body as no angular movement.
         /// </summary>
-        public bool IsParticle { 
+        public bool IsParticle
+        {
             get { return isParticle; }
             set
             {
@@ -131,7 +131,7 @@ namespace Jitter.Dynamics
         /// </summary>
         /// <param name="shape">The shape of the body.</param>
         public RigidBody(Shape shape, Material material)
-            :this(shape,material,false)
+            : this(shape, material, false)
         {
         }
 
@@ -228,7 +228,7 @@ namespace Jitter.Dynamics
         /// </summary>
         public bool IsActive
         {
-            get 
+            get
             {
                 return isActive;
             }
@@ -398,18 +398,18 @@ namespace Jitter.Dynamics
         /// <summary>
         /// The shape the body is using.
         /// </summary>
-        public Shape Shape 
+        public Shape Shape
         {
-            get { return shape; } 
-            set 
+            get { return shape; }
+            set
             {
                 // deregister update event
-                if(shape != null) shape.ShapeUpdated -= updatedHandler;
+                if (shape != null) shape.ShapeUpdated -= updatedHandler;
 
                 // register new event
-                shape = value; 
-                shape.ShapeUpdated += new ShapeUpdatedHandler(ShapeUpdated); 
-            } 
+                shape = value;
+                shape.ShapeUpdated += new ShapeUpdatedHandler(ShapeUpdated);
+            }
         }
 
         private Shape shape;
@@ -438,9 +438,9 @@ namespace Jitter.Dynamics
         public JVector LinearVelocity
         {
             get { return linearVelocity; }
-            set 
-            { 
-                if (this.isStatic) 
+            set
+            {
+                if (this.isStatic)
                     throw new InvalidOperationException("Can't set a velocity to a static body.");
                 linearVelocity = value;
             }
@@ -467,7 +467,7 @@ namespace Jitter.Dynamics
         public JVector Position
         {
             get { return position; }
-            set { position = value ; Update(); }
+            set { position = value; Update(); }
         }
 
         /// <summary>
@@ -492,8 +492,8 @@ namespace Jitter.Dynamics
             {
                 if (value && !isStatic)
                 {
-                    if(island != null)
-                    island.islandManager.MakeBodyStatic(this);
+                    if (island != null)
+                        island.islandManager.MakeBodyStatic(this);
 
                     this.angularVelocity.MakeZero();
                     this.linearVelocity.MakeZero();
@@ -522,7 +522,7 @@ namespace Jitter.Dynamics
         public float Mass
         {
             get { return 1.0f / inverseMass; }
-            set 
+            set
             {
                 if (value <= 0.0f) throw new ArgumentException("Mass can't be less or equal zero.");
 
@@ -650,21 +650,23 @@ namespace Jitter.Dynamics
             }
         }
 
+        public bool PureCollider { get; set; }
+
         private List<JVector> hullPoints = new List<JVector>();
 
         private void UpdateHullData()
         {
             hullPoints.Clear();
 
-            if(enableDebugDraw) shape.MakeHull(ref hullPoints, 3);
+            if (enableDebugDraw) shape.MakeHull(ref hullPoints, 3);
         }
 
 
         public void DebugDraw(IDebugDrawer drawer)
         {
-            JVector pos1,pos2,pos3;
+            JVector pos1, pos2, pos3;
 
-            for(int i = 0;i<hullPoints.Count;i+=3)
+            for (int i = 0; i < hullPoints.Count; i += 3)
             {
                 pos1 = hullPoints[i + 0];
                 pos2 = hullPoints[i + 1];

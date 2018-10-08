@@ -19,12 +19,9 @@
 
 #region Using Statements
 using System;
-using System.Collections.Generic;
 
-using Jitter.Dynamics;
-using Jitter.LinearMath;
-using Jitter.Collision.Shapes;
 using Jitter.Dynamics.Constraints;
+using Jitter.LinearMath;
 #endregion
 
 namespace Jitter.Dynamics
@@ -188,6 +185,7 @@ namespace Jitter.Dynamics
             //return;
 
             if (treatBody1AsStatic && treatBody2AsStatic) return;
+            if (body1.PureCollider || body2.PureCollider) return;
 
             float dvx, dvy, dvz;
 
@@ -572,7 +570,7 @@ namespace Jitter.Dynamics
 
             if (num != 0.0f)
             {
-                num = (float)Math.Sqrt(num);
+                num = (float) Math.Sqrt(num);
                 tangent.X /= num;
                 tangent.Y /= num;
                 tangent.Z /= num;
@@ -584,7 +582,7 @@ namespace Jitter.Dynamics
             else
             {
                 kTangent += body1.inverseMass;
-  
+
                 if (!body1IsMassPoint)
                 {
                     // JVector.Cross(ref relativePos1, ref normal, out rantra);
@@ -651,9 +649,9 @@ namespace Jitter.Dynamics
             {
                 restitutionBias = settings.bias * (1.0f / timestep) * JMath.Max(0.0f, Penetration - settings.allowedPenetration);
                 restitutionBias = JMath.Clamp(restitutionBias, 0.0f, settings.maximumBias);
-              //  body1IsMassPoint = body2IsMassPoint = false;
+                //  body1IsMassPoint = body2IsMassPoint = false;
             }
-      
+
 
             float timeStepRatio = timestep / lastTimeStep;
             accumulatedNormalImpulse *= timeStepRatio;
@@ -790,7 +788,7 @@ namespace Jitter.Dynamics
         public void Initialize(RigidBody body1, RigidBody body2, ref JVector point1, ref JVector point2, ref JVector n,
             float penetration, bool newContact, ContactSettings settings)
         {
-            this.body1 = body1;  this.body2 = body2;
+            this.body1 = body1; this.body2 = body2;
             this.normal = n; normal.Normalize();
             this.p1 = point1; this.p2 = point2;
 
@@ -840,7 +838,7 @@ namespace Jitter.Dynamics
             }
 
             this.settings = settings;
-            
+
 
 
         }
