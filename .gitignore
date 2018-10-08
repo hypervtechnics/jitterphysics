@@ -231,3 +231,6 @@ _Pvt_Extensions
 .fake/
 
 output/
+
+.DS_Store
+**/.DS_Store
