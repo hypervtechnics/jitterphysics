@@ -21,10 +21,9 @@
 using System;
 using System.Collections.Generic;
 
+using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
 using Jitter.LinearMath;
-using Jitter.Collision.Shapes;
-using System.Collections;
 #endregion
 
 namespace Jitter.Collision
@@ -109,7 +108,7 @@ namespace Jitter.Collision
             /// <returns>Returns true if they are equal, otherwise false.</returns>
             public override bool Equals(object obj)
             {
-                OverlapPair other = (OverlapPair)obj;
+                OverlapPair other = (OverlapPair) obj;
                 return (other.Entity1.Equals(Entity1) && other.Entity2.Equals(Entity2) ||
                     other.Entity1.Equals(Entity2) && other.Entity2.Equals(Entity1));
             }
@@ -170,7 +169,7 @@ namespace Jitter.Collision
                 {
                     foreach (IBroadphaseEntity body in activeList)
                     {
-                        if (CheckBoundingBoxes(body,keyelement.Body)) 
+                        if (CheckBoundingBoxes(body, keyelement.Body))
                             fullOverlaps.Add(new OverlapPair(body, keyelement.Body));
                     }
 
@@ -318,8 +317,10 @@ namespace Jitter.Collision
                 }
             }
 
-            threadManager.Execute();
-
+            if (multiThreaded)
+            {
+                threadManager.Execute();
+            }
         }
 
         private void SortCallback(object obj)
@@ -382,7 +383,7 @@ namespace Jitter.Collision
 
         //                index3 += (rayDirection.Z > 0.0f) ? 1 : -1;
         //                if (index3 >= axis3.Count || index3 < 0) break;
-                       
+
         //            }
         //            else
         //            {
@@ -445,7 +446,7 @@ namespace Jitter.Collision
         {
             body = null; normal = JVector.Zero; fraction = float.MaxValue;
 
-            JVector tempNormal;float tempFraction;
+            JVector tempNormal; float tempFraction;
             bool result = false;
 
             // TODO: This can be done better in CollisionSystemPersistenSAP
@@ -505,8 +506,8 @@ namespace Jitter.Collision
             if (body.Shape is Multishape)
             {
                 Multishape ms = (body.Shape as Multishape).RequestWorkingClone();
-                
-                JVector tempNormal;float tempFraction;
+
+                JVector tempNormal; float tempFraction;
                 bool multiShapeCollides = false;
 
                 JVector transformedOrigin; JVector.Subtract(ref rayOrigin, ref body.position, out transformedOrigin);
