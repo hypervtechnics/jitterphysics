@@ -15,12 +15,4 @@
         <tags>Jitter, Physics, 3D</tags>
     </metadata>
     <files>
-        <file src="..\output\net4\Jitter.dll" target="lib\net4\Jitter.dll" />
-        <file src="..\output\net4\Jitter.pdb" target="lib\net4\Jitter.pdb" />
-        <file src="..\output\net4\Jitter.xml" target="lib\net4\Jitter.xml" />
-        
-        <file src="..\output\Portable\Jitter.dll" target="lib\portable-net45+netcore45+wpa81+wp8\Jitter.dll" />
-        <file src="..\output\Portable\Jitter.pdb" target="lib\portable-net45+netcore45+wpa81+wp8\Jitter.pdb" />
-        <file src="..\output\Portable\Jitter.xml" target="lib\portable-net45+netcore45+wpa81+wp8\Jitter.xml" />
-    </files>
 </package>
