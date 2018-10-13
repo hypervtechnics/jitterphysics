@@ -20,15 +20,8 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
-
-using Jitter.Dynamics;
-using Jitter.LinearMath;
-using Jitter.Collision.Shapes;
 using System.Threading;
-#if PORTABLE
 using System.Threading.Tasks;
-using Thread = System.Threading.Tasks.Task;
-#endif
 #endregion
 
 namespace Jitter
@@ -51,7 +44,7 @@ namespace Jitter
         volatile List<Action<object>> tasks = new List<Action<object>>();
         volatile List<object> parameters = new List<object>();
 
-        private Thread[] threads;
+        private Task[] threads;
         private int currentTaskIndex, waitingThreadCount;
 
         internal int threadCount;
@@ -64,9 +57,9 @@ namespace Jitter
 
         static ThreadManager instance = null;
 
-        public static ThreadManager Instance 
-        { 
-            get 
+        public static ThreadManager Instance
+        {
+            get
             {
                 if (instance == null)
                 {
@@ -86,7 +79,7 @@ namespace Jitter
 
             threadCount = System.Environment.ProcessorCount * ThreadsPerProcessor;
 
-            threads = new Thread[threadCount];
+            threads = new Task[threadCount];
             waitHandleA = new ManualResetEvent(false);
             waitHandleB = new ManualResetEvent(false);
 
@@ -176,24 +169,14 @@ namespace Jitter
 
         private static void ThreadSleep(int dueTime)
         {
-#if PORTABLE
             Task.Delay(dueTime).Wait();
-#else
-            Thread.Sleep(dueTime);
-#endif
         }
 
-#if PORTABLE
         private delegate void ThreadStart();
-#endif
 
-        private static Thread NewThread(ThreadStart action)
+        private static Task NewThread(ThreadStart action)
         {
-#if PORTABLE
-            return new Thread(action.Invoke, TaskCreationOptions.LongRunning);
-#else
-            return new Thread(action) { IsBackground = true };
-#endif
+            return new Task(action.Invoke, TaskCreationOptions.LongRunning);
         }
 
     }
